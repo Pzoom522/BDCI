@@ -3,4 +3,7 @@
 
 ## 流程：
 ***DATA_T_RESULT.xlsx***=>导出为.csv并使每个实体用句号间隔=>***all_entities.csv***=>用CoreNLP分词=>***all_entities.csv.json***
-=>2all_entities_list.py=>***seg_pos_list.file***=>MapReduce.py & wordcount.py=>***seg_pos.csv***
+=>2all_entities_list.py=>***seg_pos_list.file***=>MapReduce.py & wordcount.py=>***seg_pos.csv***=>***seg_pos.xlsx***
+
+## 结论:
+常见词有：（商贸NN/NN）（有限JJ）（责任NN）公司NN、超市NN、店NN、分公司NN、市场NN（中间词）等
