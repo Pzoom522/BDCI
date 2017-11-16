@@ -1,4 +1,7 @@
 #用于还原新闻中的表格
+#主要缺点：
+#1)只能找到两行以上的表（算法限制）
+#2)如果表格最后一行最后一个空白字符缺失，会少找最后一行
 
 class target_news:
     def __init__(self,raw_news):
@@ -16,6 +19,26 @@ class target_news:
         #每张表格的起始位置
 
     def tableFinder(self):#主过程
+        '''
+        【6fa80abb586b485575ee3735c8dd6f4396bd19e9:第二个表只有一个1】
+        is_in_table=False
+        for scanner in range(0,len(self.raw)):
+            if (self.raw[scanner]=='1' and (not is_in_table) and self.newTable(scanner)!=0):#获得第一行，开始处理表
+                is_in_table=True
+                self.line_num=2
+                while (self.newRow(scanner,self.newTable(scanner))):
+                    self.line_num=self.line_num+1
+                if (self.line_num>3):
+                    self.table_head.append(scanner)
+                    print(self.raw[scanner:scanner+30]+self.pattern_map)
+                    self.all_rows.append(self.rows)#至少三行，算是成功找到一张表
+            else:
+                None
+            self.pattern_map=""
+            is_in_table=False
+            self.rows=[""]
+        return(self.tableMaker())#将此篇新闻的全部表格录入三维列表
+        '''
         try:
             is_in_table=False
             for scanner in range(0,len(self.raw)):

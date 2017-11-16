@@ -1,5 +1,5 @@
 import json
-com_file=open("e://workplace/test/new.file",mode='r',encoding='utf-8')#最终版本企业实体文件
+com_file=open("e://workplace/test/com.file",mode='r',encoding='utf-8')#最终版本企业实体文件
 gov_file=open("e://workplace/test/gov.file",mode='r',encoding='utf-8')#最终版本官方实体文件
 raw_file=open("e://workplace/test/DATA_TEST.txt",mode='r',encoding='utf-8')#DATA_TEST.txt
 final_result=open("e://workplace/test/FIN.json",mode='w',encoding='utf-8')

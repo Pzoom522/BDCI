@@ -1,5 +1,5 @@
-ner_file=open("e://workplace/test/ner.file",mode="r",encoding="utf-8")
-unique_ner_file=open("e://workplace/test/unique_ner.file",mode="w",encoding="utf-8")
+ner_file=open("e://workplace/inter/table_ne.temp",mode="r",encoding="utf-8")
+unique_ner_file=open("e://workplace/inter/table_ne_sen.file",mode="w",encoding="utf-8")
 line=str(ner_file.readline())
 while line:
     unique_list=[]#用于验证独一性

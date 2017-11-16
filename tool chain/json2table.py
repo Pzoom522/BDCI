@@ -25,9 +25,24 @@ def getEmotion(content):
             return '中向'
     return 'X'#没有明确表示
 
+def isgov(entity):
+    gov_prefixes = ['国家','中国','世界','联合国']
+    gov_suffixes = ['研究院','研究所','委员会','局','法院','办公室','办公厅','大学','中学','学院','银行','卫视','频道','政府','党委','党校','工会','学会','总队','大队','支队','检察院','检测院','检验所','中心','领域']
+    gov_entities = ['国务院','腾讯','阿里巴巴']
+    for i in gov_prefixes:
+        if entity.startswith(i):
+            return True
+    for i in gov_suffixes:
+        if entity.endswith(i):
+            return True
+    for i in gov_entities:
+        if i in entity:
+            return True
+    return False
+
 input_data=open("e://workplace/test/DATA_TEST.txt",mode="r",encoding="utf-8")
 all_ne    =open("e:/output.file"                  ,mode="r",encoding="utf-8")
-table_nes =open("e://workplace/test/table_ne.temp",mode="w",encoding="utf-8")
+table_nes =open("e://workplace/inter/table_ne.temp",mode="w",encoding="utf-8")
 wb        =open("e://workplace/wordbank.json"     ,mode='r',encoding='utf-8')
 wordbank=json.loads(wb.read())#情感词词典
 line = json.loads(input_data.readline())
@@ -64,8 +79,10 @@ while line:
                 for col in possible_ne_cols:
                     try:
                         item=tables[table_counter][row_counter][int(col)]
-                        if ((item.find('/')==-1) and (item.find('号')==-1)):
-                            table_nes.write('('+item+','+local_emotion+') ')
+                        if ((item.find('/')==-1) and (item[len(item)-1]!='号') and (item[len(item)-1]!='路')):
+                            if (isgov(item)):
+                                local_emotion='中向'
+                            table_nes.write(item+'='+local_emotion+' ')
                     except Exception:
                         pass
         table_nes.write('\n')
