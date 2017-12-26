@@ -1,5 +1,5 @@
 # BDCI-2017：基于机构实体的智能摘要和风险等级识别 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
-> 本队队名是“+1s”。初赛成绩为18/230，复赛成绩是
+> 本队队名是“+1s”。初赛成绩为40/230，复赛成绩是A榜13/230，B榜17/230
 ## 题目回顾
 ### 任务描述
 **对数据集中的每条记录，提取出正文中的主要机构实体，并生成智能摘要。**</br>
