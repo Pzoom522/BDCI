@@ -78,7 +78,7 @@
 #### 2.1.2 基于成词模式
 预处理阶段，我们取得了训练集实体域的分词与词性标注结果。我们对其进行了统计，发现目标输出实体具有一定的常见模式。通过对具体词汇与词性模式建立规则，我们可以提取出大量的机构实体；
 #### 2.1.3 基于结构化数据提取
-数据集中，大量的新闻中含有表格。因此，数据集的正文域可以作为一种半结构化文本进行处理。
+数据集中，大量的新闻中含有表格。因此，数据集的正文域可以作为一种半结构化文本进行处理。<br>
 首先，我们以序号作为标志物，将文本分割。若序号连续且分割得到的片段在结构上相同，则判定为表格提取后存入对应的数据结构。对得到的表格的每个单元进行扫描，若认定其中的任一单元为机构实体，则其所在的列均可认定为机构实体。
 ### 2.3 面向赛题的风险等级判定
 #### 2.3.1 “政府”类机构
@@ -88,17 +88,17 @@
 ## 3 实验与结果
 我们采用的自然语言处理工具包为Stanford CoreNLP。在进行词性标注时，选取的语料库为Penn Treebank(PTB)。
 ### 3.1 命名实体识别
-我们基于NER直接采集了标注为ORGANIZATION的实体。这种方法的优点是全自动，但是质量极低。
-我们扫描分词结果，利用预处理得到的成词模式进行模式匹配，获取实体。直接得到的结果数量相对直接NER有所增多，但是质量仍然不能令人满意。主要问题是由于词性标注(POS)寻词时难以考虑语义信息，出现了大量粘连或过短的实体。因此，我们在初步结果基础上，人工确定规则以进行切割与过滤。
+我们基于NER直接采集了标注为ORGANIZATION的实体。这种方法的优点是全自动，但是质量极低。<br>
+我们扫描分词结果，利用预处理得到的成词模式进行模式匹配，获取实体。直接得到的结果数量相对直接NER有所增多，但是质量仍然不能令人满意。主要问题是由于词性标注(POS)寻词时难以考虑语义信息，出现了大量粘连或过短的实体。因此，我们在初步结果基础上，人工确定规则以进行切割与过滤。<br>
 我们通过提取结构化数据，也得到大量实体。这部分实体的质量极高，但是数量相对有限。
 ### 3.2 风险等级判定
-我们首先通过前后缀匹配，扫描获得每条新闻中的“政府类”实体，将它们的极性全部置为中性。
+我们首先通过前后缀匹配，扫描获得每条新闻中的“政府类”实体，将它们的极性全部置为中性。<br>
 对于其它的实体，处理方式与来源具有强依赖性：对于来源为提取出的结构化文本的实体，我们首先利用情感词典匹配，试图在同一行确定极性；如果不能确定，则会返回到全表，在表头处匹配情感词。对于来源为原始文本的实体，我们会在上下文进行情感词匹配，如果匹配无效，则会返回全文情感。
 ### 3.3 结果整合与对比
-在数据清洗与预处理阶段，我们注意到训练集中摘要敷衍且关键词缺失严重的现象。通过在评测阶段的提交，我们发现这两个域并没有参与最终的评分。因此，在结果结合阶段，我们主要关注实体域和极性域。
+在数据清洗与预处理阶段，我们注意到训练集中摘要敷衍且关键词缺失严重的现象。通过在评测阶段的提交，我们发现这两个域并没有参与最终的评分。因此，在结果结合阶段，我们主要关注实体域和极性域。<br>
 在整合得到最终实体列表时，我们发现基于NER直接获得的机构实体识别B质量最差。考虑到机构实体识别C的生成过程中已经吸收了前者的信息，同时实体过量会导致得分降低（通过在A榜阶段“试榜”，我们估计最优实体数量约为21100条）。因此，我们从上述三个来源的质量出发，决定以结构化数据为主，基于规则得到的实体为辅，按照下图的逻辑进行整合：
 ![](img/merge.png)
-在整合风险等级的实际操作中，由于负向极性在目标函数里拥有更大的系数，我们在难以确定极性时，统一置为了负向。
+在整合风险等级的实际操作中，由于负向极性在目标函数里拥有更大的系数，我们在难以确定极性时，统一置为了负向。<br>
 我们各个提交版本的评分情况如下
 
 |实体抽取方法|极性判定方法|评分|
@@ -111,9 +111,9 @@
 ## 4 总结
 本文提出了一种面向需求的基于机构实体的智能摘要和风险等级识别方案。该方案充分利用了数据集所具有的特征，很好地完成了相关机构实体的抽取，较好地判定了相应的风险等级。但是，由于迭代周期的限制，本方案仍有部分数据未进行充分利用，在极性判定方面尚存在较大的提高空间，同时具有引入更多模式与工具以提升性能的可能性。本文所探讨的模式对于同类任务具有相当高的参考与借鉴价值。
 #### 参考文献/工具
-[1]Manning, Christopher D., Mihai Surdeanu, John Bauer, Jenny Finkel, Steven J. Bethard, and David McClosky. 2014. The Stanford CoreNLP Natural Language Processing Toolkit In Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations, pp. 55-60.
-[2]Pi-Chuan Chang, Huihsin Tseng, Dan Jurafsky, and Christopher D. Manning. 2009. Discriminative Reordering with Chinese Grammatical Relations Features. In Proceedings of the Third Workshop on Syntax and Structure in Statistical Translation.
-[3]Kristina Toutanova, Dan Klein, Christopher Manning, and Yoram Singer. 2003. Feature-Rich Part-of-Speech Tagging with a Cyclic Dependency Network. In Proceedings of HLT-NAACL 2003, pp. 252-259.
-[4]Jenny Rose Finkel, Trond Grenager, and Christopher Manning. 2005. Incorporating Non-local Information into Information Extraction Systems by Gibbs Sampling. Proceedings of the 43nd Annual Meeting of the Association for Computational Linguistics (ACL 2005), pp. 363-370.
+[1]Manning, Christopher D., Mihai Surdeanu, John Bauer, Jenny Finkel, Steven J. Bethard, and David McClosky. 2014. The Stanford CoreNLP Natural Language Processing Toolkit In Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics: System Demonstrations, pp. 55-60.<br>
+[2]Pi-Chuan Chang, Huihsin Tseng, Dan Jurafsky, and Christopher D. Manning. 2009. Discriminative Reordering with Chinese Grammatical Relations Features. In Proceedings of the Third Workshop on Syntax and Structure in Statistical Translation.<br>
+[3]Kristina Toutanova, Dan Klein, Christopher Manning, and Yoram Singer. 2003. Feature-Rich Part-of-Speech Tagging with a Cyclic Dependency Network. In Proceedings of HLT-NAACL 2003, pp. 252-259.<br>
+[4]Jenny Rose Finkel, Trond Grenager, and Christopher Manning. 2005. Incorporating Non-local Information into Information Extraction Systems by Gibbs Sampling. Proceedings of the 43nd Annual Meeting of the Association for Computational Linguistics (ACL 2005), pp. 363-370.<br>
 [5]	Xue, Nianwen, et al. Chinese Treebank 8.0 LDC2013T21. Web Download. Philadelphia: Linguistic Data Consortium, 2013.
 > 如果有任何问题或建议，欢迎通过issue提出。
